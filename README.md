@@ -50,3 +50,45 @@ git config --global core.autocrlf true   # Converts LF → CRLF on checkout, CRL
 
 # For Linux/macOS developers
 git config --global core.autocrlf input  # Converts CRLF → LF on commit, leaves LF as-is
+
+
+
+✅ Notes for All Pipelines
+
+Service Connections
+
+dev-service-connection → DEV subscription/resource group
+
+uat-service-connection → UAT subscription/resource group
+
+prod-service-connection → PROD subscription/resource group
+
+Make sure each service connection has contributor access to the Recovery Services vault and storage accounts.
+
+Variable Groups
+
+DEV: VG-DEV
+
+UAT: VG-UAT
+
+PROD: VG-PROD
+
+Must include all required keys: ENVIRONMENT, RESOURCE_GROUP, VAULT_NAME, STORAGE_ACCOUNTS, SMTP_USER, SMTP_PASS, EMAIL_TO, etc.
+
+Gmail Notifications
+
+Requires msmtp installed on the agent.
+
+Uses Gmail App Password stored as secret (SMTP_PASS).
+
+Parallel Execution
+
+Controlled by MAX_PARALLEL from the variable group.
+
+Handled by the Bash script via xargs.
+
+Logs
+
+Each pipeline publishes msmtp log as artifact.
+
+Allows tracking of email notifications.
