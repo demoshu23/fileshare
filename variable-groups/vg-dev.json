@@ -1,0 +1,15 @@
+{
+  "name": "VG-DEV",
+  "variables": {
+    "ENVIRONMENT": { "value": "dev" },
+    "RESOURCE_GROUP": { "value": "rg-dev" },
+    "VAULT_NAME": { "value": "rsv-dev" },
+    "STORAGE_ACCOUNTS": { "value": "stdevbackup001 stdevbackup002" },
+    "MAX_PARALLEL": { "value": "2" },
+    "POLL_INTERVAL": { "value": "30" },
+    "SMTP_USER": { "value": "ci-bot@gmail.com" },
+    "SMTP_PASS": { "value": "$(GMAIL_APP_PASS)", "isSecret": true },
+    "EMAIL_TO": { "value": "dev-ops-team@company.com" },
+    "EMAIL_FROM": { "value": "ci-bot@gmail.com" }
+  }
+}

@@ -1,0 +1,47 @@
+trigger: none
+pr: none
+
+# ==============================
+# VARIABLES
+# ==============================
+variables:
+- group: VG-UAT # UAT variable group with all required keys
+
+# ==============================
+# JOB: Restore UAT File Shares
+# ==============================
+jobs:
+- job: RestoreUAT
+  displayName: 'Restore Azure File Shares - UAT'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+
+  # Step 1: Checkout repo
+  - checkout: self
+
+  # Step 2: Ensure dependencies (msmtp for Gmail notifications)
+  - task: Bash@3
+    displayName: 'Install dependencies'
+    inputs:
+      targetType: 'inline'
+      script: |
+        sudo apt-get update
+        sudo apt-get install -y msmtp
+
+  # Step 3: Run restore script
+  - task: AzureCLI@2
+    displayName: 'Run Azure File Share Restore Script'
+    inputs:
+      azureSubscription: 'uat-service-connection' # Must exist in DevOps
+      scriptType: 'bash'
+      scriptLocation: 'repoPath'
+      scriptPath: 'scripts/restore-fileshares.sh'
+      failOnStandardError: true
+
+  # Step 4: Optional: Upload logs as artifact
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish restore logs'
+    inputs:
+      targetPath: '/tmp/msmtp.log'
+      artifactName: 'restore-uat-logs'

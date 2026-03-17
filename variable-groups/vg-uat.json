@@ -1,0 +1,15 @@
+{
+  "name": "VG-UAT",
+  "variables": {
+    "ENVIRONMENT": { "value": "uat" },
+    "RESOURCE_GROUP": { "value": "rg-uat" },
+    "VAULT_NAME": { "value": "rsv-uat" },
+    "STORAGE_ACCOUNTS": { "value": "stuatbackup001 stuatbackup002" },
+    "MAX_PARALLEL": { "value": "3" },
+    "POLL_INTERVAL": { "value": "30" },
+    "SMTP_USER": { "value": "ci-bot@gmail.com" },
+    "SMTP_PASS": { "value": "$(GMAIL_APP_PASS)", "isSecret": true },
+    "EMAIL_TO": { "value": "uat-ops-team@company.com" },
+    "EMAIL_FROM": { "value": "ci-bot@gmail.com" }
+  }
+}

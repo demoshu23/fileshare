@@ -1,0 +1,15 @@
+{
+  "name": "VG-PROD",
+  "variables": {
+    "ENVIRONMENT": { "value": "prod" },
+    "RESOURCE_GROUP": { "value": "rg-prod" },
+    "VAULT_NAME": { "value": "rsv-prod" },
+    "STORAGE_ACCOUNTS": { "value": "stprodbackup001 stprodbackup002" },
+    "MAX_PARALLEL": { "value": "3" },
+    "POLL_INTERVAL": { "value": "30" },
+    "SMTP_USER": { "value": "ci-bot@gmail.com" },
+    "SMTP_PASS": { "value": "$(GMAIL_APP_PASS)", "isSecret": true },
+    "EMAIL_TO": { "value": "prod-ops-team@company.com" },
+    "EMAIL_FROM": { "value": "ci-bot@gmail.com" }
+  }
+}

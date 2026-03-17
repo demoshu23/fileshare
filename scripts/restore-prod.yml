@@ -1,0 +1,37 @@
+trigger: none
+pr: none
+
+variables:
+- group: VG-PROD # PROD variable group
+
+jobs:
+- job: RestorePROD
+  displayName: 'Restore Azure File Shares - PROD'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+
+  - checkout: self
+
+  - task: Bash@3
+    displayName: 'Install dependencies'
+    inputs:
+      targetType: 'inline'
+      script: |
+        sudo apt-get update
+        sudo apt-get install -y msmtp
+
+  - task: AzureCLI@2
+    displayName: 'Run Azure File Share Restore Script'
+    inputs:
+      azureSubscription: 'prod-service-connection'
+      scriptType: 'bash'
+      scriptLocation: 'repoPath'
+      scriptPath: 'scripts/restore-fileshares.sh'
+      failOnStandardError: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish restore logs'
+    inputs:
+      targetPath: '/tmp/msmtp.log'
+      artifactName: 'restore-prod-logs'

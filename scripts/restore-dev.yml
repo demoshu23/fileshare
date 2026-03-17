@@ -1,0 +1,41 @@
+trigger: none
+pr: none
+
+variables:
+- group: VG-DEV # DEV variable group
+
+jobs:
+- job: RestoreDEV
+  displayName: 'Restore Azure File Shares - DEV'
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+
+  # Checkout repo
+  - checkout: self
+
+  # Install dependencies (msmtp for Gmail)
+  - task: Bash@3
+    displayName: 'Install dependencies'
+    inputs:
+      targetType: 'inline'
+      script: |
+        sudo apt-get update
+        sudo apt-get install -y msmtp
+
+  # Run restore script
+  - task: AzureCLI@2
+    displayName: 'Run Azure File Share Restore Script'
+    inputs:
+      azureSubscription: 'dev-service-connection'
+      scriptType: 'bash'
+      scriptLocation: 'repoPath'
+      scriptPath: 'scripts/restore-fileshares.sh'
+      failOnStandardError: true
+
+  # Publish logs
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish restore logs'
+    inputs:
+      targetPath: '/tmp/msmtp.log'
+      artifactName: 'restore-dev-logs'
