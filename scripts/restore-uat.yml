@@ -30,15 +30,24 @@ jobs:
         sudo apt-get install -y msmtp
 
   # Step 3: Run restore script
+  # - task: AzureCLI@2
+  #   displayName: 'Run Azure File Share Restore Script'
+  #   inputs:
+  #     azureSubscription: 'uat-service-connection' # Must exist in DevOps
+  #     scriptType: 'bash'
+  #     scriptLocation: 'repoPath'
+  #     scriptPath: 'scripts/restore-fileshares.sh'
+  #     failOnStandardError: true
   - task: AzureCLI@2
-    displayName: 'Run Azure File Share Restore Script'
+    displayName: 'Run Restore Script Inline'
     inputs:
-      azureSubscription: 'uat-service-connection' # Must exist in DevOps
+      azureSubscription: 'uat-service-connection'
       scriptType: 'bash'
-      scriptLocation: 'repoPath'
-      scriptPath: 'scripts/restore-fileshares.sh'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        echo "Starting Azure File Share restore..."
+        ./scripts/restore-fileshares.sh
       failOnStandardError: true
-
   # Step 4: Optional: Upload logs as artifact
   - task: PublishPipelineArtifact@1
     displayName: 'Publish restore logs'
